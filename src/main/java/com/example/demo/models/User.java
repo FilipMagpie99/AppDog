@@ -1,18 +1,22 @@
-package models;
+package com.example.demo.models;
 
-public class Admin {
+
+public class User {
     private String name;
     private String surname;
+    private String password;
     private String email;
+    private Integer phone_number;
 
-    public Admin() {
+    public String getPassword() {
+        return password;
     }
 
-    public Admin(String name, String surname, String email, Integer phone_number) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.phone_number = phone_number;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public User() {
     }
 
     public String getName() {
@@ -46,6 +50,4 @@ public class Admin {
     public void setPhone_number(Integer phone_number) {
         this.phone_number = phone_number;
     }
-
-    private Integer phone_number;
 }

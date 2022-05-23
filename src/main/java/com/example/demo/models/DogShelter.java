@@ -1,6 +1,11 @@
-package models;
+package com.example.demo.models;
 
-public class Dog_shelter {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class DogShelter {
+    private Integer shelterId;
     private String name;
     private String address;
     private String password;
@@ -8,7 +13,8 @@ public class Dog_shelter {
     private Integer phone_number;
     private String email;
 
-    public Dog_shelter(String name, String address, String password, Integer nip_number, Integer phone_number, String email) {
+    public DogShelter(Integer shelterId, String name, String address, String password, Integer nip_number, Integer phone_number, String email) {
+        this.shelterId =shelterId;
         this.name = name;
         this.address = address;
         this.password = password;
@@ -33,7 +39,7 @@ public class Dog_shelter {
         this.email = email;
     }
 
-    public Dog_shelter() {
+    public DogShelter() {
     }
 
     public String getName() {
@@ -58,5 +64,14 @@ public class Dog_shelter {
 
     public void setNip_number(Integer nip_number) {
         this.nip_number = nip_number;
+    }
+
+    public void setShelterId(Integer id) {
+        this.shelterId = id;
+    }
+
+    @Id
+    public Integer getShelterId() {
+        return shelterId;
     }
 }
