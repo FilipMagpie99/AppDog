@@ -1,6 +1,12 @@
 package com.example.demo.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Admin {
+    @Id
+    private Long adminId;
     private String name;
     private String surname;
     private String email;
@@ -13,6 +19,14 @@ public class Admin {
         this.surname = surname;
         this.email = email;
         this.phone_number = phone_number;
+    }
+
+    public Long getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(Long adminId) {
+        this.adminId = adminId;
     }
 
     public String getName() {

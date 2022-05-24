@@ -1,7 +1,12 @@
 package com.example.demo.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
+@Entity
 public class User {
+    @Id
+    private Long userId;
     private String name;
     private String surname;
     private String password;
@@ -16,7 +21,20 @@ public class User {
         this.password = password;
     }
 
-    public User() {
+    public User(String name, String surname, String password, String email, Integer phone_number) {
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.email = email;
+        this.phone_number = phone_number;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
