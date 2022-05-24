@@ -1,9 +1,13 @@
 package com.example.demo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import net.bytebuddy.dynamic.loading.InjectionClassLoader;
+import org.hibernate.boot.model.naming.Identifier;
+
+import javax.persistence.*;
+
 
 @Entity
+@Table(name="Users")
 public class User {
     @Id
     private Long userId;
@@ -11,7 +15,7 @@ public class User {
     private String surname;
     private String password;
     private String email;
-    private Integer phone_number;
+    private String phone_number;
 
     public String getPassword() {
         return password;
@@ -21,7 +25,7 @@ public class User {
         this.password = password;
     }
 
-    public User(String name, String surname, String password, String email, Integer phone_number) {
+    public User(String name, String surname, String password, String email, String phone_number) {
         this.name = name;
         this.surname = surname;
         this.password = password;
@@ -31,6 +35,9 @@ public class User {
 
     public Long getUserId() {
         return userId;
+    }
+    public User(){
+
     }
 
     public void setUserId(Long userId) {
@@ -61,11 +68,11 @@ public class User {
         this.email = email;
     }
 
-    public Integer getPhone_number() {
+    public String getPhone_number() {
         return phone_number;
     }
 
-    public void setPhone_number(Integer phone_number) {
+    public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
 }
