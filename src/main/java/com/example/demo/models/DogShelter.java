@@ -5,6 +5,7 @@ import javax.persistence.Id;
 
 @Entity
 public class DogShelter {
+    @Id
     private Integer shelterId;
     private String name;
     private String address;

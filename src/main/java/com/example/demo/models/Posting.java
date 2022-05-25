@@ -1,6 +1,12 @@
 package com.example.demo.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Posting {
+    @Id
+    private Integer postingId;
     private String name;
     private String image;
     private String description;
@@ -36,5 +42,13 @@ public class Posting {
         this.name = name;
         this.image = image;
         this.description = description;
+    }
+
+    public Integer getPostingId() {
+        return postingId;
+    }
+
+    public void setPostingId(Integer postingId) {
+        this.postingId = postingId;
     }
 }
