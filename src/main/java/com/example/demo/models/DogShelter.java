@@ -17,8 +17,7 @@ public class DogShelter {
     private Integer phone_number;
     private String email;
 
-    public DogShelter(Integer shelterId, String name, String address, String password, Integer nip_number, Integer phone_number, String email) {
-        this.shelterId =shelterId;
+    public DogShelter(String name, String address, String password, Integer nip_number, Integer phone_number, String email) {
         this.name = name;
         this.address = address;
         this.password = password;

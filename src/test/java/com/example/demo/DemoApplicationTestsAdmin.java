@@ -49,6 +49,12 @@ public class DemoApplicationTestsAdmin {
 
     private JacksonTester<User> jacksonTester;
 
+    @BeforeEach
+    public void init(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        JacksonTester.initFields(this, objectMapper);
+    }
+
     @Test
     public void getUserTest() throws Exception {
         User user = new User("Imie", "Nazwisko", "Haslo", "mail@domena.com", "111222333");
