@@ -77,4 +77,20 @@ public class DogShelter {
     public Integer getShelterId() {
         return shelterId;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Posting> getShelterPostings() {
+        return shelterPostings;
+    }
+
+    public void setShelterPostings(List<Posting> shelterPostings) {
+        this.shelterPostings = shelterPostings;
+    }
 }

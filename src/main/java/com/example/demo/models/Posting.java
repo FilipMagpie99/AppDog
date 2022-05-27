@@ -58,4 +58,20 @@ public class Posting {
     public void setPostingId(Integer postingId) {
         this.postingId = postingId;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public DogShelter getShelter() {
+        return shelter;
+    }
+
+    public void setShelter(DogShelter shelter) {
+        this.shelter = shelter;
+    }
 }

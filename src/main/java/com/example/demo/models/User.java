@@ -81,4 +81,12 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public List<Posting> getUserPostings() {
+        return userPostings;
+    }
+
+    public void setUserPostings(List<Posting> userPostings) {
+        this.userPostings = userPostings;
+    }
 }
