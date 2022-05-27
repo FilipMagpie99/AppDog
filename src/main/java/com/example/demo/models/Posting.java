@@ -1,9 +1,6 @@
 package com.example.demo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Posting {
@@ -13,6 +10,13 @@ public class Posting {
     private String name;
     private String image;
     private String description;
+    @ManyToOne
+    @JoinColumn(name="userId")
+    private User user = null;
+    @ManyToOne
+    @JoinColumn(name="shelterId")
+    //null bo nie wiadomo na początku czy to normalny użytkownik czy shelter||trzeba sprawdzać kto dodaje posting przed dodaniem postingu
+    private DogShelter shelter = null;
 
     public String getName() {
         return name;

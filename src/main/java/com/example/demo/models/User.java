@@ -4,6 +4,7 @@ import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 import org.hibernate.boot.model.naming.Identifier;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -17,14 +18,10 @@ public class User {
     private String password;
     private String email;
     private String phone_number;
+    @OneToMany(mappedBy = "user")
+    private List<Posting> userPostings;
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public User(String name, String surname, String password, String email, String phone_number) {
         this.name = name;
@@ -75,5 +72,13 @@ public class User {
 
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

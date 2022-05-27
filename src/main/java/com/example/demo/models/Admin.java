@@ -13,15 +13,19 @@ public class Admin {
     private String name;
     private String surname;
     private String email;
+    private String password;
+    private String phone_number;
+
 
     public Admin() {
     }
 
-    public Admin(String name, String surname, String email, Integer phone_number) {
+    public Admin(String name, String surname, String email, String phone_number, String password) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.phone_number = phone_number;
+        this.password=password;
     }
 
     public Long getAdminId() {
@@ -56,13 +60,17 @@ public class Admin {
         this.email = email;
     }
 
-    public Integer getPhone_number() {
+    public String getPhone_number() {
         return phone_number;
     }
 
-    public void setPhone_number(Integer phone_number) {
+    public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
 
-    private Integer phone_number;
+    public String getPassword() {return password;}
+
+    public void setPassword(String password) {this.password = password;}
+
+
 }

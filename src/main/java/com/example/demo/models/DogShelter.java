@@ -1,9 +1,7 @@
 package com.example.demo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class DogShelter {
@@ -14,10 +12,12 @@ public class DogShelter {
     private String address;
     private String password;
     private Integer nip_number;
-    private Integer phone_number;
+    private String phone_number;
     private String email;
+    @OneToMany(mappedBy = "shelter")
+    private List<Posting> shelterPostings;
 
-    public DogShelter(String name, String address, String password, Integer nip_number, Integer phone_number, String email) {
+    public DogShelter(String name, String address, String password, Integer nip_number, String phone_number, String email) {
         this.name = name;
         this.address = address;
         this.password = password;
@@ -26,11 +26,11 @@ public class DogShelter {
         this.email = email;
     }
 
-    public Integer getPhone_number() {
+    public String getPhone_number() {
         return phone_number;
     }
 
-    public void setPhone_number(Integer phone_number) {
+    public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
 
