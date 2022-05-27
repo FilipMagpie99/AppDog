@@ -6,16 +6,16 @@ import javax.persistence.*;
 public class Posting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer postingId;
+    private Long postingId;
     private String name;
     private String image;
     private String description;
-    @ManyToOne
+    @ManyToOne(targetEntity = User.class,fetch = FetchType.EAGER)
     @JoinColumn(name="userId")
     private User user = null;
-    @ManyToOne
-    @JoinColumn(name="shelter")
-    private DogShelter shelter = null;
+    @ManyToOne(targetEntity = DogShelter.class,fetch = FetchType.EAGER)
+    @JoinColumn(name="shelterId")
+    private DogShelter dogShelter = null;
 
     public String getName() {
         return name;
@@ -50,13 +50,19 @@ public class Posting {
         this.description = description;
     }
 
-    public Integer getPostingId() {
+    public Long getPostingId() {
         return postingId;
     }
 
-    public void setPostingId(Integer postingId) {
+    public void setPostingId(Long postingId) {
         this.postingId = postingId;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
+    public void setShelter(DogShelter dogShelter) {
+        this.dogShelter = dogShelter;
+    }
 }

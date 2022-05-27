@@ -1,8 +1,5 @@
 package com.example.demo.models;
 
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
-import org.hibernate.boot.model.naming.Identifier;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -18,7 +15,7 @@ public class User {
     private String password;
     private String email;
     private String phone_number;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",targetEntity = Posting.class,fetch = FetchType.EAGER)
     private List<Posting> userPostings;
 
 
@@ -82,5 +79,7 @@ public class User {
         this.password = password;
     }
 
-
+    public void setUserPostings(List<Posting> userPostings) {
+        this.userPostings = userPostings;
+    }
 }

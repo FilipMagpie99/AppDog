@@ -7,17 +7,17 @@ import java.util.List;
 public class DogShelter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer shelterId;
+    private Long shelterId;
     private String name;
     private String address;
     private String password;
-    private Integer nip_number;
+    private String nip_number;
     private String phone_number;
     private String email;
-    @OneToMany(mappedBy = "shelter")
+    @OneToMany(mappedBy = "dogShelter",targetEntity = Posting.class, fetch = FetchType.EAGER)
     private List<Posting> shelterPostings;
 
-    public DogShelter(String name, String address, String password, Integer nip_number, String phone_number, String email) {
+    public DogShelter(String name, String address, String password, String nip_number, String phone_number, String email) {
         this.name = name;
         this.address = address;
         this.password = password;
@@ -61,20 +61,20 @@ public class DogShelter {
         this.address = address;
     }
 
-    public Integer getNip_number() {
+    public String getNip_number() {
         return nip_number;
     }
 
-    public void setNip_number(Integer nip_number) {
+    public void setNip_number(String nip_number) {
         this.nip_number = nip_number;
     }
 
-    public void setShelterId(Integer id) {
+    public void setShelterId(Long id) {
         this.shelterId = id;
     }
 
     @Id
-    public Integer getShelterId() {
+    public Long getShelterId() {
         return shelterId;
     }
 
@@ -86,5 +86,7 @@ public class DogShelter {
         this.password = password;
     }
 
-
+    public void setShelterPostings(List<Posting> shelterPostings) {
+        this.shelterPostings = shelterPostings;
+    }
 }
