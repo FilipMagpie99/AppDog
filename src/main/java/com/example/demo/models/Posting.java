@@ -14,8 +14,7 @@ public class Posting {
     @JoinColumn(name="userId")
     private User user = null;
     @ManyToOne
-    @JoinColumn(name="shelterId")
-    //null bo nie wiadomo na początku czy to normalny użytkownik czy shelter||trzeba sprawdzać kto dodaje posting przed dodaniem postingu
+    @JoinColumn(name="shelter")
     private DogShelter shelter = null;
 
     public String getName() {
@@ -59,19 +58,5 @@ public class Posting {
         this.postingId = postingId;
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public DogShelter getShelter() {
-        return shelter;
-    }
-
-    public void setShelter(DogShelter shelter) {
-        this.shelter = shelter;
-    }
 }

@@ -86,11 +86,5 @@ public class DogShelter {
         this.password = password;
     }
 
-    public List<Posting> getShelterPostings() {
-        return shelterPostings;
-    }
 
-    public void setShelterPostings(List<Posting> shelterPostings) {
-        this.shelterPostings = shelterPostings;
-    }
 }
