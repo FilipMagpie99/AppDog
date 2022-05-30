@@ -88,6 +88,10 @@ public class MainPage extends VerticalLayout {
         postingHorizontalLayout.setJustifyContentMode(JustifyContentMode.CENTER);
         postingHorizontalLayout.setWidth("100%");
 
+        setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        setPadding(false);
         add(titleHorizontalLayout, searchHorizontalLayout, postingHorizontalLayout);
     }
 
