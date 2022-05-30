@@ -65,4 +65,16 @@ public class Posting {
     public void setShelter(DogShelter dogShelter) {
         this.dogShelter = dogShelter;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public DogShelter getDogShelter() {
+        return dogShelter;
+    }
+
+    public void setDogShelter(DogShelter dogShelter) {
+        this.dogShelter = dogShelter;
+    }
 }
