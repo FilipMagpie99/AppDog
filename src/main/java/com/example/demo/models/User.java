@@ -82,4 +82,8 @@ public class User {
     public void setUserPostings(List<Posting> userPostings) {
         this.userPostings = userPostings;
     }
+
+    public List<Posting> getUserPostings() {
+        return userPostings;
+    }
 }
