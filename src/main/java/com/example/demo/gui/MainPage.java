@@ -55,6 +55,7 @@ public class MainPage extends VerticalLayout {
         postingGrid.addColumn(Posting::getName).setHeader("Nazwa").setAutoWidth(true);
         postingGrid.addColumn(Posting::getDescription).setHeader("Opis").setAutoWidth(true);
         postingGrid.addColumn(Posting::getUser).setHeader("Użytkownik").setAutoWidth(true);
+
 //        postingGrid.addComponentColumn(e -> {
 //            Button detailsButton = new Button("Szczegóły", p -> {
 //                optionalPosting = p.get

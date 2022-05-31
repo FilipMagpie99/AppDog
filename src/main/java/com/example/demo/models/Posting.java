@@ -69,6 +69,9 @@ public class Posting {
     public User getUser() {
         return user;
     }
+    public String getUserName(){
+        return user.getName();
+    }
 
     public DogShelter getDogShelter() {
         return dogShelter;

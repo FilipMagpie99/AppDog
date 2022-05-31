@@ -86,4 +86,9 @@ public class User {
     public List<Posting> getUserPostings() {
         return userPostings;
     }
+
+    @Override
+    public String toString() {
+        return name+" "+surname;
+    }
 }
