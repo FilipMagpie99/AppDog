@@ -2,54 +2,66 @@ package com.example.demo.controller;
 
 import com.example.demo.models.DogShelter;
 import com.example.demo.models.User;
+import com.example.demo.security.CurrentUserFinder;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
-@RestController
-@RequestMapping("/api")
+@Controller
+@RequestMapping("/user")
 public class UserController {
     private UserService userService;
+    @Autowired
+    CurrentUserFinder currentUserFinder;
 
     @Autowired
     public UserController(UserService userService){
         this.userService = userService;
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping
+    public String userProfile(Model model){
+        Optional<User> currentUser = currentUserFinder.getCurrentUser();
+        currentUser.ifPresent(user -> model.addAttribute("currUser", user));
+        return "userProfile.html";
+    }
+
+    @GetMapping("/{userId}")
     ResponseEntity<User> getUser(@PathVariable Long userId){
         return ResponseEntity.of(userService.getUser(userId));
     }
 
-    @GetMapping("/users")
+    @GetMapping("/all")
     List<User> getUsers(){
         return userService.getUsers();
     }
 
-    @PostMapping(path = "/user")
-    ResponseEntity<Void> createUser(@Valid @RequestBody User user){
+    @PostMapping(path = "/")
+    ResponseEntity<Void> createUser(@RequestBody User user){
         User createdUser= userService.setUser(user);
         URI location= ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{userId}").buildAndExpand(createdUser.getUserId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping("/users/{userId}")
-    ResponseEntity<Void> updateUser(@Valid @RequestBody User user,@PathVariable Long userId){
+    @PutMapping("/all/{userId}")
+    ResponseEntity<Void> updateUser(@RequestBody User user,@PathVariable Long userId){
         return userService.getUser(userId)
                 .map(p->{userService.setUser(user);
                     return new ResponseEntity<Void>(HttpStatus.OK);
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/all/{userId}")
     ResponseEntity<Void> deleteShelter(@PathVariable Long userId){
         return  userService.getUser(userId).map(p->{
             userService.deleteUser(userId);

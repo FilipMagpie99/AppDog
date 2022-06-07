@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+  .container{
+    width: 350px;
+    height: 200px;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px
+  }
+  </style>
+</head>
+<body>
+<center>
+    <div class="wrapper">
+        <div class="container">
+            <form name="f" th:action="@{/login}" method="POST">
+
+                <div th:if="${param.error}" class="alert alert-error">
+                    <small class="incorrect">Invalid username and password.</small>
+                </div>
+
+                <div th:if="${param.logout}" class="alert alert-success">
+                    <small class="logout"> You have been logged out.</small>
+                </div>
+
+                <div class="col-75">
+                    <div class="col-75">
+                        <label for="username">Username</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="username" name="username"/>
+                    </div>
+                </div>
+
+                <div class="col-75">
+                    <div class="col-75">
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="password" id="password" name="password"/>
+                    </div>
+                </div>
+                <div class="col-30">
+                    <input type="submit" value="Login">
+                </div>
+            </form>
+
+            <form th:action="@{/register}" method="GET">
+                <div class="col-30">
+                    <input type="submit" value="Register">
+                </div>
+            </form>
+        </div>
+    </div>
+</center>
+</body>
+</html>

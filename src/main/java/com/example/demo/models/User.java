@@ -10,17 +10,21 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+    private String username;
     private String name;
     private String surname;
     private String password;
     private String email;
+    private boolean enabled = true;
     private String phone_number;
+    private String role = "ROLE_USER";
     @OneToMany(mappedBy = "user",targetEntity = Posting.class,fetch = FetchType.EAGER)
     private List<Posting> userPostings;
 
 
 
-    public User(String name, String surname, String password, String email, String phone_number) {
+    public User(String username, String name, String surname, String password, String email, String phone_number) {
+        this.username = username;
         this.name = name;
         this.surname = surname;
         this.password = password;
@@ -28,11 +32,34 @@ public class User {
         this.phone_number = phone_number;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public Long getUserId() {
         return userId;
     }
     public User(){
+    }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public void setUserId(Long userId) {

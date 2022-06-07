@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+  .container{
+    width: 350px;
+    height: 260px;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px
+  }
+
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <form th:action="@{/register/save}" th:object="${newAccount}" enctype="multipart/form-data" method="POST">
+    <p><b>Account details</b></p>
+    <div class="row">
+      <div class="col-25" style="float: left; width: 25%; margin-top: 6px">
+        <label for="username">usename</label>
+      </div>
+      <div class="col-75" style="float: left; width: 75%; margin-top: 6px">
+        <input type="text" id="username" required="required" th:field="${newAccount.username}">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-25" style="float: left; width: 25%; margin-top: 6px">
+        <label for="name">Name</label>
+      </div>
+      <div class="col-75" style="float: left; width: 75%; margin-top: 6px">
+        <input type="text" id="name" required="required" th:field="${newAccount.name}">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-25" style="float: left; width: 25%; margin-top: 6px">
+        <label for="surname">Surname</label>
+      </div>
+      <div class="col-75" style="float: left; width: 75%; margin-top: 6px">
+        <input type="text" id="surname" required="required" th:field="${newAccount.surname}">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-25" style="float: left; width: 25%; margin-top: 6px">
+        <label for="password">Password</label>
+      </div>
+      <div class="col-75" style="float: left; width: 75%; margin-top: 6px">
+        <input type="text" id="password" required="required" th:field="${newAccount.password}">
+      </div>
+    </div>
+
+    <p><b>Contact details</b></p>
+    <div class="row">
+      <div class="col-25" style="float: left; width: 25%; margin-top: 6px">
+        <label for="email">Email</label>
+      </div>
+      <div class="col-75" style="float: left; width: 75%; margin-top: 6px">
+        <input type="text" id="email" required="required" th:field="${newAccount.email}">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-25" style="float: left; width: 25%; margin-top: 6px">
+        <label for="email">Phone number</label>
+      </div>
+      <div class="col-75" style="float: left; width: 75%; margin-top: 6px">
+        <input type="text" id="phone_number" required="required" th:field="${newAccount.phone_number}">
+      </div>
+    </div>
+
+    <div class="row">
+      <button type="submit" style="float: right" class="btn btn-primary">Register</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

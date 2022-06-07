@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class DogShelterController {
     }
 
     @PostMapping(path = "/shelters")
-    ResponseEntity<Void> createShelter(@Valid @RequestBody DogShelter dogShelter){
+    ResponseEntity<Void> createShelter(@RequestBody DogShelter dogShelter){
         DogShelter createdShelter= dogShelterService.setShelter(dogShelter);
         URI location= ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{shelterId}").buildAndExpand(createdShelter.getShelterId()).toUri();
@@ -44,7 +43,7 @@ public class DogShelterController {
     }
 
     @PutMapping("/shelters/{shelterId}")
-    ResponseEntity<Void> updateShelter(@Valid @RequestBody DogShelter dogShelter,@PathVariable Integer shelterId){
+    ResponseEntity<Void> updateShelter(@RequestBody DogShelter dogShelter,@PathVariable Integer shelterId){
         return dogShelterService.getShelter(shelterId)
                 .map(p->{dogShelterService.setShelter(dogShelter);
                 return new ResponseEntity<Void>(HttpStatus.OK);

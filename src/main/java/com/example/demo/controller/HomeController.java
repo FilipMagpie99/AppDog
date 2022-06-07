@@ -1,0 +1,26 @@
+package com.example.demo.controller;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+@Controller
+public class HomeController {
+    @GetMapping(value = "/")
+    public String redirectToHome(){
+
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Collection<? extends GrantedAuthority> role = new ArrayList<>();
+        role = principal.getAuthorities();
+        if(role.toString().equals("[ROLE_USER]")){
+            return "redirect:/user";
+        }else {
+            return "redirect:/admin";
+        }
+    }
+}

@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import javax.validation.Valid;
+
 import java.net.URI;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class PostingController {
     }
 
     @PostMapping(path = "/postings")
-    ResponseEntity<Void> createShelter(@Valid @RequestBody Posting posting){
+    ResponseEntity<Void> createShelter(@RequestBody Posting posting){
         Posting createdPosting= postingService.setPosting(posting);
         URI location= ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{postingId}").buildAndExpand(createdPosting.getPostingId()).toUri();
@@ -48,7 +48,7 @@ public class PostingController {
     }
 
     @PutMapping("/postings/{postingId}")
-    ResponseEntity<Void> updateShelter(@Valid @RequestBody Posting posting,@PathVariable Integer postingId){
+    ResponseEntity<Void> updateShelter(@RequestBody Posting posting,@PathVariable Integer postingId){
         return postingService.getPosting(postingId)
                 .map(p->{postingService.setPosting(posting);
                     return new ResponseEntity<Void>(HttpStatus.OK);
