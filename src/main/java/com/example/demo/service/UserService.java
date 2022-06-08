@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.models.DogShelter;
+import com.example.demo.models.Posting;
 import com.example.demo.models.User;
 import org.springframework.stereotype.Service;
 

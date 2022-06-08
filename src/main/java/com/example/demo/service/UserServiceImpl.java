@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.models.Posting;
 import com.example.demo.models.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,4 +37,6 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
+
+
 }
