@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.models.DogShelter;
+import com.example.demo.models.Posting;
 import com.example.demo.models.User;
 import com.example.demo.security.CurrentUserFinder;
+import com.example.demo.service.DogShelterService;
+import com.example.demo.service.PostingService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,7 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
     private UserService userService;
+
     @Autowired
     CurrentUserFinder currentUserFinder;
 
@@ -32,6 +36,7 @@ public class UserController {
     public String userProfile(Model model){
         Optional<User> currentUser = currentUserFinder.getCurrentUser();
         currentUser.ifPresent(user -> model.addAttribute("currUser", user));
+        currentUser.ifPresent(user -> model.addAttribute("userPostings", user.getUserPostings()));
         return "userProfile.html";
     }
 
@@ -44,6 +49,8 @@ public class UserController {
     List<User> getUsers(){
         return userService.getUsers();
     }
+
+
 
     @PostMapping(path = "/")
     ResponseEntity<Void> createUser(@RequestBody User user){

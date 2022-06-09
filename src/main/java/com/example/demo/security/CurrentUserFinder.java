@@ -20,7 +20,7 @@ public class CurrentUserFinder {
         String username = details.getUsername();
         long userId = -1;
         for(User user : userService.getUsers()){
-            if(user.getName().equals(username)){
+            if(user.getUsername().equals(username)){
                 userId = user.getUserId();
                 break;
             }
