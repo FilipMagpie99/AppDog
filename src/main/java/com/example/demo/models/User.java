@@ -17,6 +17,7 @@ public class User {
     private String email;
     private boolean enabled = true;
     private String phone_number;
+    private String profile_picture = "default_profile.jpg";
     private String role = "ROLE_USER";
     @OneToMany(mappedBy = "user",targetEntity = Posting.class,fetch = FetchType.EAGER)
     private List<Posting> userPostings;
@@ -30,6 +31,14 @@ public class User {
         this.password = password;
         this.email = email;
         this.phone_number = phone_number;
+    }
+
+    public String getProfile_picture() {
+        return profile_picture;
+    }
+
+    public void setProfile_picture(String profile_picture) {
+        this.profile_picture = profile_picture;
     }
 
     public String getUsername() {

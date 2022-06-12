@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,7 +16,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/home")
 public class PostingController {
     private PostingService postingService;
@@ -31,7 +32,7 @@ public class PostingController {
         List<Posting> postings = postingService.getPostings();
         model.addAttribute("postings", postings);
 
-        return "homePage";
+        return "homePage2";
     }
     @GetMapping("/postings/{postingId}")
     public String postingPage(@PathVariable Integer postingId, Model model) {
@@ -40,22 +41,16 @@ public class PostingController {
         return "postingPage";
     }
 
-    @GetMapping("/postings/{postingName}")
-    public String postingSearchByName(@PathVariable String postingName, Model model,Pageable pageable) {
-       if(postingName!=null) {
-           Page<Posting> postings = postingService.searchByName(postingName, pageable);
-           model.addAttribute("posting", postings);
-       }
-       else return "redirect:/home";
-
-       return "homePage";
-    }
-
-    /*
-    @GetMapping("/postings/{postingId}")
-    ResponseEntity<Posting> getShelter(@PathVariable Integer postingId) {
-        return ResponseEntity.of(postingService.getPosting(postingId));
-    }*/
+//    @GetMapping("/postings/{postingName}")
+//    public String postingSearchByName(@PathVariable String postingName, Model model,Pageable pageable) {
+//       if(postingName!=null) {
+//           Page<Posting> postings = postingService.searchByName(postingName, pageable);
+//           model.addAttribute("posting", postings);
+//       }
+//       else return "redirect:/home";
+//
+//       return "homePage";
+//    }
 
     @GetMapping("/postings")
     List<Posting> getPostings() {

@@ -39,7 +39,7 @@ public class UserController {
     public String userHome(Model model){
         List<Posting> posting = postingService.getPostings();
         model.addAttribute("posting", posting);
-        return "homePage.html";
+        return "homePage2.html";
     }
 //    @GetMapping
 //    public String userProfile(Model model){

@@ -6,10 +6,10 @@ import javax.persistence.*;
 public class Posting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postingId;
+    private Integer postingId;
     private String name;
-    private String image;
     private String description;
+    private String posting_image = "no_image.jpg";
     @ManyToOne(targetEntity = User.class,fetch = FetchType.EAGER)
     @JoinColumn(name="userId")
     private User user = null;
@@ -17,20 +17,20 @@ public class Posting {
     @JoinColumn(name="shelterId")
     private DogShelter dogShelter = null;
 
+    public String getPosting_image() {
+        return posting_image;
+    }
+
+    public void setPosting_image(String posting_image) {
+        this.posting_image = posting_image;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public String getDescription() {
@@ -44,17 +44,16 @@ public class Posting {
     public Posting() {
     }
 
-    public Posting(String name, String image, String description) {
+    public Posting(String name, String description) {
         this.name = name;
-        this.image = image;
         this.description = description;
     }
 
-    public Long getPostingId() {
+    public Integer getPostingId() {
         return postingId;
     }
 
-    public void setPostingId(Long postingId) {
+    public void setPostingId(Integer postingId) {
         this.postingId = postingId;
     }
 

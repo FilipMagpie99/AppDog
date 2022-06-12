@@ -72,6 +72,14 @@
         <input type="text" id="phone_number" required="required" th:field="${newAccount.phone_number}">
       </div>
     </div>
+    <div class="row">
+      <div class="col-25" style="float: left; width: 25%; margin-top: 6px">
+        <label for="profile">Profile picture</label>
+      </div>
+      <div class="col-75" style="float: left; width: 75%; margin-top: 6px">
+        <input type="file" id="profile" th:name="content"/>
+      </div>
+    </div>
 
     <div class="row">
       <button type="submit" style="float: right" class="btn btn-primary">Register</button>

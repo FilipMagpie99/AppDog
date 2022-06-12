@@ -89,3 +89,19 @@ select usename, password, enabled from USERS where usename = ? [42122-212]
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-13 00:37:29 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Błąd składniowy w wyrażeniu SQL "select * [*]form users"
+Syntax error in SQL statement "select * [*]form users"; SQL statement:
+select * form users [42000-212]
+2022-06-13 00:52:07 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabela "POSTINGS" nie istnieje
+Table "POSTINGS" not found; SQL statement:
+select * from postings [42102-212]
+2022-06-13 00:52:31 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Błąd składniowy w wyrażeniu SQL "[*]delte from posting"; oczekiwano "DELETE, DROP, DECLARE, DEALLOCATE"
+Syntax error in SQL statement "[*]delte from posting"; expected "DELETE, DROP, DECLARE, DEALLOCATE"; SQL statement:
+delte from posting [42001-212]
+2022-06-13 01:21:49 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Błąd składniowy w wyrażeniu SQL "delete from users email [*]= 'q'"
+Syntax error in SQL statement "delete from users email [*]= 'q'"; SQL statement:
+delete from users email = 'q' [42000-212]
