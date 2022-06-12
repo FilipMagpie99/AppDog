@@ -28,11 +28,33 @@ public class UserController {
     CurrentUserFinder currentUserFinder;
 
     @Autowired
+    PostingService postingService;
+
+    @Autowired
     public UserController(UserService userService){
         this.userService = userService;
     }
 
     @GetMapping
+    public String userHome(Model model){
+        List<Posting> posting = postingService.getPostings();
+        model.addAttribute("posting", posting);
+        return "homePage.html";
+    }
+//    @GetMapping
+//    public String userProfile(Model model){
+//        Optional<User> currentUser = currentUserFinder.getCurrentUser();
+//        currentUser.ifPresent(user -> model.addAttribute("currUser", user));
+//        currentUser.ifPresent(user -> model.addAttribute("userPostings", user.getUserPostings()));
+//        return "homePage.html";
+//    }
+
+    @GetMapping("/{userId}")
+    ResponseEntity<User> getUser(@PathVariable Long userId){
+        return ResponseEntity.of(userService.getUser(userId));
+    }
+
+    @GetMapping("/userProfile")
     public String userProfile(Model model){
         Optional<User> currentUser = currentUserFinder.getCurrentUser();
         currentUser.ifPresent(user -> model.addAttribute("currUser", user));
@@ -40,15 +62,6 @@ public class UserController {
         return "userProfile.html";
     }
 
-    @GetMapping("/{userId}")
-    ResponseEntity<User> getUser(@PathVariable Long userId){
-        return ResponseEntity.of(userService.getUser(userId));
-    }
-
-    @GetMapping("/all")
-    List<User> getUsers(){
-        return userService.getUsers();
-    }
 
 
 

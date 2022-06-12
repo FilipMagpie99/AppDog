@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+<ul th:fragment="userNavBar">
+    <li><a href="/"><i class="fa fa-book"></i> Home </a></li>
+    <li><a th:href="@{/user/userProfile}"><i class="fa fa-user"></i> My profile</a></li>
+</ul>
+</body>
+</html>
