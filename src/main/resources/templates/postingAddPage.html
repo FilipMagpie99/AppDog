@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+  .container{
+    width: 350px;
+    height: 260px;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px
+  }
+
+
+  </style>
+</head>
+<body>
+<div class="container">
+    <form th:action="@{/home/postings}" th:object="${newPosting}" method="POST">
+        <p><b>Account details</b></p>
+        <div class="row">
+            <div class="col-25" style="float: left; width: 25%; margin-top: 6px">
+                <label for="name">Title</label>
+            </div>
+            <div class="col-75" style="float: left; width: 75%; margin-top: 6px">
+                <input type="text" id="name" required="required" th:field="${newPosting.name}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25" style="float: left; width: 25%; margin-top: 6px">
+                <label for="description">Description</label>
+            </div>
+            <div class="col-75" style="float: left; width: 75%; margin-top: 6px">
+                <input type="text" id="description" required="required" th:field="${newPosting.description}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25" style="float: left; width: 25%; margin-top: 6px">
+                <label for="image">Image</label>
+            </div>
+            <div class="col-75" style="float: left; width: 75%; margin-top: 6px">
+                <input type="text" id="image" required="required" th:field="${newPosting.posting_image}">
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <button type="submit" style="float: right" class="btn btn-primary">Register</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

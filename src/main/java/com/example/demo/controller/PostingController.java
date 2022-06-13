@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.models.Posting;
+import com.example.demo.security.CurrentUserFinder;
 import com.example.demo.service.PostingService;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +22,12 @@ import java.util.Optional;
 @RequestMapping("/home")
 public class PostingController {
     private PostingService postingService;
+    private CurrentUserFinder currentUserFinder;
 
     @Autowired
-    public PostingController(PostingService postingService) {
+    public PostingController(PostingService postingService, CurrentUserFinder currentUserFinder) {
         this.postingService = postingService;
+        this.currentUserFinder = currentUserFinder;
     }
 
 
@@ -63,11 +67,14 @@ public class PostingController {
     }
 
     @PostMapping(path = "/postings")
-    ResponseEntity<Void> createShelter(@RequestBody Posting posting) {
+    String createShelter(Posting posting) {
+
+        posting.setUser(currentUserFinder.getCurrentUser().get());
         Posting createdPosting = postingService.setPosting(posting);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{postingId}").buildAndExpand(createdPosting.getPostingId()).toUri();
-        return ResponseEntity.created(location).build();
+
+        return "redirect:/user";
     }
 
     @PutMapping("/postings/{postingId}")
@@ -86,6 +93,12 @@ public class PostingController {
             return new ResponseEntity<Void>(HttpStatus.OK);
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    @GetMapping("/addPosting")
+    public String addPosting(Model model){
+        model.addAttribute("newPosting", new Posting());
+        return "postingAddPage.html";
+    }
+
 
 
 }
