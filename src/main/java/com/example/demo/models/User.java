@@ -23,6 +23,14 @@ public class User {
     private List<Posting> userPostings;
 
 
+    public User(Long userId, String username, String name, String surname, String password, String email) {
+        this.userId = userId;
+        this.username = username;
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.email = email;
+    }
 
     public User(String username, String name, String surname, String password, String email, String phone_number) {
         this.username = username;
