@@ -43,13 +43,15 @@ public class DemoApplicationTestsUserController {
         entityManager.persist(user3);
         entityManager.getTransaction().commit();
         entityManager.refresh(user);
+        entityManager.refresh(user2);
+        entityManager.refresh(user3);
 
         List<User> userList = new ArrayList<>();
         userList.add(user); userList.add(user2); userList.add(user3);
 
         for (User userLoop : userList) {
             System.out.println("User - Nickname: " + userLoop.getUsername() + ", Imię: " + userLoop.getName() + ", Nazwisko: " + userLoop.getSurname() +
-                    ", Hasło: " + userLoop.getPassword() + ", Email: " + userLoop.getEmail() + ", Numer telefonu: " + userLoop.getPhone_number() + "\n");
+                    ", Hasło: " + userLoop.getPassword() + ", Email: " + userLoop.getEmail() + ", Numer telefonu: " + userLoop.getPhone_number());
         }
     }
 
@@ -72,17 +74,26 @@ public class DemoApplicationTestsUserController {
     public void updateUserTest() {
         TypedQuery<User> userTypedQuery = entityManager.createQuery("SELECT p FROM User p", User.class);
         String username = "userName2";
+        String updatedUserName = "surnameUpdate";
         List<User> resultList = userTypedQuery.getResultList();
 
-        User user = new User();
+        entityManager.getTransaction().begin();
 
         for (User userLoop : resultList) {
             if (userLoop.getUsername().contains(username)) {
-                userLoop.setSurname("surnameUpdate");
-                user = userLoop;
+                userLoop.setSurname(updatedUserName);
+                entityManager.getTransaction().commit();
             }
         }
-        System.out.println("Result: " + user.getSurname());
+
+        TypedQuery<User> userTypedQuery2 = entityManager.createQuery("SELECT p FROM User p", User.class);
+        List<User> resultList2 = userTypedQuery2.getResultList();
+
+        for (User userLoop : resultList2) {
+            if (userLoop.getSurname().contains(updatedUserName)) {
+                System.out.println("Result: " + userLoop.getSurname());
+            }
+        }
     }
 
     @Test
@@ -95,17 +106,4 @@ public class DemoApplicationTestsUserController {
         resultList.forEach(action -> entityManager.remove(action));
         entityManager.getTransaction().commit();
     }
-
-//    @Test
-//    @Order(2)
-//    public void createPostTest() {
-//        Posting posting = new Posting("nazwa", "opis", "obrazek");
-//
-//        entityManager.getTransaction().begin();
-//        entityManager.persist(posting);
-//        entityManager.getTransaction().commit();
-//        entityManager.refresh(posting);
-//
-//        System.out.println("Post - Name: " + posting.getName() + ", Description: " + posting.getDescription() + ", Obrazek: " + posting.getPosting_image());
-//    }
 }
