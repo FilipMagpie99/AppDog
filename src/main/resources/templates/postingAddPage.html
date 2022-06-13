@@ -17,7 +17,6 @@
   </style>
 </head>
 <body>
-<ul th:replace="a :: adminNavBar"></ul>
 <div class="container">
     <form th:action="@{/home/postings}" th:object="${newPosting}" method="POST">
         <p><b>Account details</b></p>
@@ -53,7 +52,6 @@
             <button type="submit" style="float: right" class="btn btn-primary">Register</button>
         </div>
     </form>
-    <a th:href = "@{/}"> Back to Posting List</a>
 </div>
 </body>
 </html>

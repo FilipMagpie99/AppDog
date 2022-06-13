@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +31,6 @@ public class UserController {
 
     @Autowired
     PostingService postingService;
-
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public UserController(UserService userService) {
@@ -142,22 +138,5 @@ public class UserController {
                     userService.setUser(user);
                     return new ResponseEntity<Void>(HttpStatus.OK);
                 }).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-    @GetMapping("/changePassword/{userId}")
-    public String changePassword(Model model
-            ,@PathVariable( value="userId" ) Long userId){
-        Optional<User> user = userService.getUser(userId);
-        model.addAttribute("user",user);
-        return "changepassword.html";
-    }
-    @PostMapping("/saveUserPassword")
-    public String saveUserPassword(@ModelAttribute("user") User user,
-                                   @RequestParam(value = "oldpassword") String oldpassword,
-                                   @RequestParam(value = "newpassword") String newpassword){
-        if(bCryptPasswordEncoder.matches(oldpassword,user.getPassword()) && oldpassword!=null && newpassword!=null) {
-            user.setPassword(bCryptPasswordEncoder.encode(newpassword));
-            userService.setUser(user);
-        }
-        return "redirect:/";
     }
 }

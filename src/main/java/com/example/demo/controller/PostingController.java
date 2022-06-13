@@ -74,7 +74,7 @@ public class PostingController {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{postingId}").buildAndExpand(createdPosting.getPostingId()).toUri();
 
-        return "redirect:/";
+        return "redirect:/user";
     }
 
     @PutMapping("/postings/{postingId}")

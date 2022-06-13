@@ -32,9 +32,9 @@ public class PostingServiceImpl implements PostingService {
         return postingRepository.save(posting);
     }
 
-    public void deletePosting(Integer bookId){
-       Posting posting = postingRepository.findById(bookId).get();
-        postingRepository.delete(posting);
+    @Override
+    public void deletePosting(Integer postingId) {
+        postingRepository.deleteById(postingId);
     }
 
     @Override

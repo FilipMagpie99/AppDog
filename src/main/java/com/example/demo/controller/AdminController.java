@@ -1,23 +1,18 @@
 package com.example.demo.controller;
 
-import com.example.demo.models.Posting;
 import com.example.demo.models.User;
-import com.example.demo.service.PostingService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
-@Controller
-@RequestMapping("/admin")
+@RestController
+@RequestMapping("/api")
 public class AdminController {
     private UserService userService;
 
@@ -25,34 +20,6 @@ public class AdminController {
     public AdminController(UserService userService){
         this.userService = userService;
     }
-    @Autowired
-    PostingService postingService;
-
-    @GetMapping
-    public String adminHome(Model model){
-        List<Posting> posting = postingService.getPostings();
-        model.addAttribute("posting", posting);
-        return "homePageAdmin.html";
-    }
-
-    @GetMapping("/deletePosting/{postingId}")
-    public String deleteBook(Model model
-            ,@PathVariable( value="postingId" ) Integer postingId){
-        Optional<Posting> posting = postingService.getPosting(postingId);
-        postingService.deletePosting(postingId);
-        model.addAttribute("posting",posting);
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/updatePosting/{postingId}")
-    public String updatePosting(Model model
-            ,@PathVariable( value="postingId" ) Integer postingId){
-        Optional<Posting> posting = postingService.getPosting(postingId);
-        model.addAttribute("posting",posting);
-        return "updatePosting.html";
-    }
-
-
 
     @GetMapping("/admin/{userId}")
     ResponseEntity<User> getUser(@PathVariable Long userId){
