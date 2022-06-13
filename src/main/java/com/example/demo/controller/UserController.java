@@ -8,6 +8,8 @@ import com.example.demo.service.DogShelterService;
 import com.example.demo.service.PostingService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,61 +33,110 @@ public class UserController {
     PostingService postingService;
 
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping
-    public String userHome(Model model){
-        List<Posting> posting = postingService.getPostings();
-        model.addAttribute("posting", posting);
-        return "homePage2.html";
+    @GetMapping("/search")
+    public String userHome1(String keyword, Model model, Pageable pageable) {
+        Long userId = currentUserFinder.getCurrentUserId();
+        if (keyword == "") {
+            return "redirect:/user";
+        } else {
+
+            int pageSize = 5;
+            Page<Posting> page = postingService.findPaginatedByName(1, pageSize, "name", "asc", keyword);
+            List<Posting> posting = page.getContent();
+            model.addAttribute("currentPage", 1);
+            model.addAttribute("totalPages", page.getTotalPages());
+            model.addAttribute("totalItems", page.getTotalElements());
+            model.addAttribute("sortField", "name");
+            model.addAttribute("sortDir", "asc");
+            model.addAttribute("reverseSortDir", "desc");
+            model.addAttribute("posting", posting);
+            model.addAttribute("userId", userId);
+            return "sortedHomePage";
+        }
     }
-//    @GetMapping
-//    public String userProfile(Model model){
-//        Optional<User> currentUser = currentUserFinder.getCurrentUser();
-//        currentUser.ifPresent(user -> model.addAttribute("currUser", user));
-//        currentUser.ifPresent(user -> model.addAttribute("userPostings", user.getUserPostings()));
-//        return "homePage.html";
-//    }
+
+    @GetMapping
+    public String userHome(Model model) {
+        return "redirect:/user/page/1?sortField=name&sortDir=asc";
+    }
+
+    @GetMapping("/page/{pageNo}")
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+                                @RequestParam("sortField") String sortField,
+                                @RequestParam("sortDir") String sortDir,
+                                Model model) {
+        int pageSize = 5;
+        Page<Posting> page = postingService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        List<Posting> posting = page.getContent();
+        String keyword = " ";
+        Long userId = currentUserFinder.getCurrentUserId();
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("posting", posting);
+        model.addAttribute("userId", userId);
+        return "sortedHomePage";
+    }
 
     @GetMapping("/{userId}")
-    ResponseEntity<User> getUser(@PathVariable Long userId){
+    ResponseEntity<User> getUser(@PathVariable Long userId) {
         return ResponseEntity.of(userService.getUser(userId));
     }
 
     @GetMapping("/userProfile")
-    public String userProfile(Model model){
+    public String userProfile(Model model) {
         Optional<User> currentUser = currentUserFinder.getCurrentUser();
         currentUser.ifPresent(user -> model.addAttribute("currUser", user));
         currentUser.ifPresent(user -> model.addAttribute("userPostings", user.getUserPostings()));
         return "userProfile.html";
     }
+/*
+    @GetMapping("/userProfile/page/{pageNo}")
+    public String userProfilePaginated(@PathVariable(value = "pageNo") int pageNo,
+                                       @RequestParam("sortField") String sortField,
+                                       @RequestParam("sortDir") String sortDir,
+                                       Model model) {
+        int pageSize = 5;
 
+        Page<Posting> page = postingService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        List<Posting> posting = page.getContent();
+        String keyword = " ";
+        Long userId = currentUserFinder.getCurrentUserId();
 
-
+        Optional<User> currentUser = currentUserFinder.getCurrentUser();
+        currentUser.ifPresent(user -> model.addAttribute("currUser", user));
+        currentUser.ifPresent(user -> model.addAttribute("userPostings", user.getUserPostings()));
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        return "userProfile.html";
+    }
+*/
 
     @PostMapping(path = "/")
-    ResponseEntity<Void> createUser(@RequestBody User user){
-        User createdUser= userService.setUser(user);
-        URI location= ServletUriComponentsBuilder.fromCurrentRequest()
+    ResponseEntity<Void> createUser(@RequestBody User user) {
+        User createdUser = userService.setUser(user);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{userId}").buildAndExpand(createdUser.getUserId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/all/{userId}")
-    ResponseEntity<Void> updateUser(@RequestBody User user,@PathVariable Long userId){
+    ResponseEntity<Void> updateUser(@RequestBody User user, @PathVariable Long userId) {
         return userService.getUser(userId)
-                .map(p->{userService.setUser(user);
+                .map(p -> {
+                    userService.setUser(user);
                     return new ResponseEntity<Void>(HttpStatus.OK);
                 }).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/all/{userId}")
-    ResponseEntity<Void> deleteShelter(@PathVariable Long userId){
-        return  userService.getUser(userId).map(p->{
-            userService.deleteUser(userId);
-            return new ResponseEntity<Void>(HttpStatus.OK);
-        }).orElseGet(()->ResponseEntity.notFound().build());
     }
 }

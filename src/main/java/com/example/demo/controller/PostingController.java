@@ -62,8 +62,8 @@ public class PostingController {
     }
 
     @GetMapping(value = "/postings", params = "name")
-    Page<Posting> getSheltersByName(@RequestParam String name, Pageable pageable) {
-        return postingService.searchByName(name, pageable);
+    Page<Posting> getSheltersByName(@RequestParam String name,Pageable pageable) {
+        return postingService.searchByName(name,pageable);
     }
 
     @PostMapping(path = "/postings")

@@ -20,6 +20,16 @@
       <h1>Posting List</h1>
       <br />
       <br />
+
+      <form th:action="@{/user/search}" method="get">
+        <input type="search"   name="keyword" th:value="${keyword}"  placeholder="Znajd? og?oszenie" size="50" >
+        <button type="submit" class="btn btn-primary">
+          <i class="fa fa-search"></i> Search
+        </button>
+        <a  class="btn btn-danger" th:href=@{page/1?sortField=name&sortDir=asc}>
+          <i class="fa fa-refresh fa-spin"></i> Refresh
+        </a>
+      </form>
     </div>
     <th:block th:each="posting : ${posting}">
       <div class="card" style="margin: 20px; padding: 0px">

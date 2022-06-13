@@ -10,9 +10,14 @@ import java.util.Optional;
 
 @Service
 public interface PostingService {
-    Page<Posting> searchByName(String name, Pageable pageable);
+    Page<Posting> searchByName(String name,Pageable pageable);
     Posting setPosting(Posting posting);
     void deletePosting(Integer postingId);
     List<Posting> getPostings();
+    Page<Posting> getPostings(Pageable pageable);
+
     Optional<Posting> getPosting(Integer postingId);
+    Page<Posting> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
+    Page<Posting> findPaginatedByName(int pageNo, int pageSize, String sortField, String sortDirection,String name);
+
 }
