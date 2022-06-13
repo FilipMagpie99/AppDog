@@ -22,7 +22,10 @@ public class User {
     @OneToMany(mappedBy = "user",targetEntity = Posting.class,fetch = FetchType.EAGER)
     private List<Posting> userPostings;
 
-
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public User(String username, String name, String surname, String password, String email, String phone_number) {
         this.username = username;
