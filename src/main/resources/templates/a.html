@@ -6,10 +6,11 @@
 
 </head>
 <body>
-<ul th:fragment="userNavBar">
-    <li><a href="/"><i class="fa fa-book"></i> Home </a></li>
-    <li><a th:href="@{/user/userProfile}"><i class="fa fa-user"></i> My profile</a></li>
-    <li><a th:href="@{/home/addPosting}"><i class="fa fa-user"></i> Add posting</a></li>
+<ul th:fragment="userNavBar" class="userNavBar">
+    <li ><a href="/"><img th:src="${'/uploads/appdog.jpg'}" class="logo"/></a></li>
+    <li><a th:href="@{/user/userProfile}" class="ahrefMenu"><i class="fa fa-user"></i> My profile</a></li>
+    <li><a th:href="@{/home/addPosting}"  class="ahrefMenu"><i class="fa fa-plus"></i> Add posting</a></li>
+    <li style="float:right"><a class="active" href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
 </ul>
 </body>
 </html>

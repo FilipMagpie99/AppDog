@@ -1,7 +1,10 @@
 body {
-    background-color: #cfe1ff;
+    background-color: orange;
     background-size: cover;
     font-family: Helvetica, sans-serif;
+}
+.userNavBar{
+background-color:#D24D51;
 }
 ul {
   list-style-type: none;
@@ -10,12 +13,9 @@ ul {
   overflow: hidden;
   background-color: #f2f2f2;
   border-radius: 4px;
-
   margin-top: 20px;
-  margin-right: 10%;
-  margin-left: 10%;
   min-width: 430px;
-  width: 1100px;
+  width: 100%;
 }
 th{
     width: 20%;
@@ -67,4 +67,12 @@ table{
   margin-top: 20px;
   min-width: 430px;
   width: 1100px;
+}
+.ahrefMenu{
+color:white;
+font-size: 32px;
+}
+.logo{
+width:140px;
+height: 80px;
 }
