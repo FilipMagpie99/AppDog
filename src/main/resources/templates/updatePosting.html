@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <style>
   .container{
@@ -20,7 +21,7 @@
 <ul th:replace="a :: adminNavBar"></ul>
 <div class="container">
   <form th:action="@{/home/postings}" th:object="${posting}" method="POST">
-    <p><b>Account details</b></p>
+    <p><b>Posting details</b></p>
     <div class="row">
       <input type="hidden" th:field="*{postingId}" />
       <div class="col-25" style="float: left; width: 25%; margin-top: 6px">
@@ -51,7 +52,7 @@
 
 
     <div class="row">
-      <button type="submit" style="float: right" class="btn btn-primary">Register</button>
+      <button type="submit" style="float: right" class="btn btn-primary">Submit changes</button>
     </div>
   </form>
 </div>

@@ -36,6 +36,7 @@ public class UserController {
     @Autowired
     BCryptPasswordEncoder   bCryptPasswordEncoder;
 
+
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
@@ -143,9 +144,9 @@ public class UserController {
                     return new ResponseEntity<Void>(HttpStatus.OK);
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
-    @GetMapping("/changePassword/{userId}")
-    public String changePassword(Model model
-            ,@PathVariable( value="userId" ) Long userId){
+    @GetMapping("/changePassword")
+    public String changePassword(Model model){
+        Long userId = currentUserFinder.getCurrentUserId();
         Optional<User> user = userService.getUser(userId);
         model.addAttribute("user",user);
         return "changepassword.html";

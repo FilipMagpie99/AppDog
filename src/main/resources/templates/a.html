@@ -11,7 +11,6 @@
     <li><a th:href="@{/user/userProfile}" class="ahrefMenu"><i class="fa fa-user"></i> My profile</a></li>
     <li><a th:href="@{/home/addPosting}"  class="ahrefMenu"><i class="fa fa-plus"></i> Add posting</a></li>
     <li style="float:right"><a class="active" href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
-    <li style="float:right"><a class="change" th:href="@{/user/changePassword/{userId}(userId=${userId})}"><i class="fa fa-lock"></i> Change Password</a></li>
 </ul>
 
 <ul th:fragment="adminNavBar" class="userNavBar">
