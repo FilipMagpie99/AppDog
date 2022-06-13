@@ -17,6 +17,12 @@ public class Posting {
     @JoinColumn(name="shelterId")
     private DogShelter dogShelter = null;
 
+    public Posting(String name, String description, String posting_image) {
+        this.name = name;
+        this.description = description;
+        this.posting_image = posting_image;
+    }
+
     public String getPosting_image() {
         return posting_image;
     }
