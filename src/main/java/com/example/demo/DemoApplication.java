@@ -30,10 +30,10 @@ public class DemoApplication {
 	CommandLineRunner runner() {
 		return args -> {
 
-//			User admin = new User("admin", "admin", "admin", "admin", "admin@admin.com", "000000000");
-//			admin.setPassword(pwEncoder.encode(admin.getPassword()));
-//			admin.setRole("ROLE_ADMIN");
-//			userService.setUser(admin);
+			User admin = new User("admin", "admin", "admin", "admin", "admin@admin.com", "000000000");
+			admin.setPassword(pwEncoder.encode(admin.getPassword()));
+			admin.setRole("ROLE_ADMIN");
+			userService.setUser(admin);
 
 //			Posting posting = new Posting("a","a");
 //			postingService.setPosting(posting);

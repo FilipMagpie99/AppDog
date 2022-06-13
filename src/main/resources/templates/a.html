@@ -12,5 +12,10 @@
     <li><a th:href="@{/home/addPosting}"  class="ahrefMenu"><i class="fa fa-plus"></i> Add posting</a></li>
     <li style="float:right"><a class="active" href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
 </ul>
+
+<ul th:fragment="adminNavBar" class="userNavBar">
+    <li ><a href="/"><img th:src="${'/uploads/appdog.jpg'}" class="logo"/></a></li>
+    <li style="float:right"><a class="active" href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
+</ul>
 </body>
 </html>
