@@ -26,6 +26,21 @@
             </div>
             <h1 th:text="${currUser}"></h1>
         </div>
+        <th:block th:each="userPostings : ${userPostings}">
+            <div class="card" style="margin: 20px; padding: 0px">
+                <div class="card-body" style="margin:0px; padding:0px">
+                    <div class="row" style="margin:0px">
+                        <div class="col-25">
+                            <img th:src="${'/uploads/'+userPostings.posting_image}" height="152px" width="216px"/>
+                        </div>
+                        <div class="col-75" style="padding: .75rem 1rem;">
+                            <a class="card-title" style="text-decoration: none; margin-bottom: 2px;font-weight: bold;font-size: 2em;color: black; display:block;" th:href="${'/home/postings/' + userPostings.postingId}" th:text="${userPostings.name}"></a>
+                            <p class="card-text" style="font-size:15px; margin-top:10px;" th:text="${userPostings.description}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
     </div>
 </center>
 </body>
