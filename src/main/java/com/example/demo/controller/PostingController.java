@@ -118,8 +118,6 @@ public class PostingController {
     @GetMapping("/postingsfilter")
     public String searchByFilters(Model model, @RequestParam(value= "animal",required = false) String animal, @RequestParam(value= "sex",required = false) String sex){
         List<Posting> postings = postingService.getPostings().stream().filter(x -> x.getSex().equals(sex) && x.getAnimal().equals(animal)).collect(Collectors.toList());
-        System.out.println("dupa");
-
         model.addAttribute("posting", postings);
         return "sortedHomePage";
     }
