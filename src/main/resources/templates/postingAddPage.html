@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
   .container{
     width: 350px;
@@ -17,6 +19,7 @@
   </style>
 </head>
 <body>
+<ul th:replace="a :: userNavBar"></ul>
 <div class="container">
     <form th:action="@{/home/postings}" th:object="${newPosting}" method="POST">
         <p><b>Account details</b></p>
@@ -49,7 +52,8 @@
 
 
         <div class="row">
-            <button type="submit" style="float: right" class="btn btn-primary">Register</button>
+            <button type="submit"  class="btn btn-primary">Add post</button>
+
         </div>
     </form>
 </div>

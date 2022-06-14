@@ -7,6 +7,7 @@ import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,8 @@ public class AdminController {
     @Autowired
     PostingService postingService;
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
     @GetMapping
     public String adminHome(Model model){
         List<Posting> posting = postingService.getPostings();
@@ -86,5 +89,38 @@ public class AdminController {
             userService.deleteUser(userId);
             return new ResponseEntity<Void>(HttpStatus.OK);
         }).orElseGet(()->ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/deleteUser/{userId}")
+    public String deleteUser(Model model
+            ,@PathVariable( value="userId" ) Long userId){
+        Optional<User> user = userService.getUser(userId);
+        userService.deleteUser(userId);
+        model.addAttribute("user",user);
+        return "redirect:/admin";
+    }
+    @GetMapping("/updateUser/{userId}")
+    public String updateUser(Model model
+            ,@PathVariable( value="userId" ) Long userId){
+
+        Optional<User> user = userService.getUser(userId);
+        model.addAttribute("user",user);
+        return "updateuser";
+    }
+    @GetMapping("/users")
+    public String usersTableView(Model model) {
+
+            List<User> users = userService.getUsers();
+            model.addAttribute("users",users);
+
+        return "usersPageAdmin";
+    }
+    @PostMapping("/saveUser")
+    public String saveBook(@ModelAttribute("user") User user,@RequestParam(value = "newpassword") String newpassword){
+        if(!newpassword.isEmpty()) {
+            user.setPassword(bCryptPasswordEncoder.encode(newpassword));
+        }
+        userService.setUser(user);
+        return "redirect:/admin/users";
     }
 }
