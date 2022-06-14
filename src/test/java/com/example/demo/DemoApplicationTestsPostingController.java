@@ -12,6 +12,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DemoApplicationTestsPostingController {
 
@@ -53,6 +56,8 @@ public class DemoApplicationTestsPostingController {
             System.out.println("Post - Name: " + postingLoop.getName() + ", Description: " + postingLoop.getDescription()
                     + ", Posting image: " + postingLoop.getPosting_image());
         }
+        assertNotNull(postingList);
+        assertEquals(3,postingList.size());
     }
 
     @Test
@@ -67,6 +72,9 @@ public class DemoApplicationTestsPostingController {
                 System.out.println("Result: " + name + " = " + postingLoop.getName());
             }
         }
+        assertEquals(3,resultList.size());
+
+
     }
 
     @Test
@@ -94,6 +102,9 @@ public class DemoApplicationTestsPostingController {
                 System.out.println("Result: " + postingLoop.getName());
             }
         }
+
+
+
     }
 
     @Test
