@@ -12,8 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +44,7 @@ public class PostingController {
 
         return "homePage2";
     }
+
     @GetMapping("/postings/{postingId}")
     public String postingPage(@PathVariable Integer postingId, Model model) {
         Optional<Posting> currentPosting = postingService.getPosting(postingId);
@@ -68,9 +74,17 @@ public class PostingController {
     }
 
     @PostMapping(path = "/postings")
-    String createShelter(Posting posting) {
+    String createShelter(Posting posting,@RequestParam(value="image") MultipartFile file) throws IOException {
 
         posting.setUser(currentUserFinder.getCurrentUser().get());
+        String fileName = file.getOriginalFilename();
+        if(!file.isEmpty()){
+            String path = System.getProperty("user.dir")+"/uploads"+"/"+fileName;
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path)));
+            stream.write(file.getBytes());
+            stream.close();
+            posting.setPosting_image(fileName);
+        }
         Posting createdPosting = postingService.setPosting(posting);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{postingId}").buildAndExpand(createdPosting.getPostingId()).toUri();
@@ -94,11 +108,13 @@ public class PostingController {
             return new ResponseEntity<Void>(HttpStatus.OK);
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @GetMapping("/addPosting")
     public String addPosting(Model model){
         model.addAttribute("newPosting", new Posting());
         return "postingAddPage.html";
     }
+
     @GetMapping("/postingsfilter")
     public String searchByFilters(Model model, @RequestParam(value= "animal",required = false) String animal, @RequestParam(value= "sex",required = false) String sex){
         List<Posting> postings = postingService.getPostings().stream().filter(x -> x.getSex().equals(sex) && x.getAnimal().equals(animal)).collect(Collectors.toList());
@@ -106,7 +122,6 @@ public class PostingController {
 
         model.addAttribute("posting", postings);
         return "sortedHomePage";
-
     }
 
 

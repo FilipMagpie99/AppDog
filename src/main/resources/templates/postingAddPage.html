@@ -21,7 +21,7 @@
 <body>
 <ul th:replace="a :: userNavBar"></ul>
 <div class="container">
-    <form th:action="@{/home/postings}" th:object="${newPosting}" method="POST">
+    <form th:action="@{/home/postings}" th:object="${newPosting}" method="POST" enctype="multipart/form-data">
         <p><b>Account details</b></p>
         <div class="row">
             <div class="col-25" style="float: left; width: 25%; margin-top: 6px">
@@ -42,10 +42,10 @@
 
         <div class="row">
             <div class="col-25" style="float: left; width: 25%; margin-top: 6px">
-                <label for="image">Image</label>
+                <label for="profile">Profile picture</label>
             </div>
             <div class="col-75" style="float: left; width: 75%; margin-top: 6px">
-                <input type="text" id="image" required="required" th:field="${newPosting.posting_image}">
+                <input type="file" id="profile" th:name="image"/>
             </div>
         </div>
         <div>
