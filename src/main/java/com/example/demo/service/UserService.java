@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 public interface UserService {
-    Optional<User> getUser(Long userId);
+    User getUser(Long userId);
     List<User> getUsers();
     User setUser(User user);
     void deleteUser(Long userId);

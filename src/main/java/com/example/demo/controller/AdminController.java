@@ -103,13 +103,6 @@ public class AdminController {
         return "updatePosting.html";
     }
 
-
-
-    @GetMapping("/admin/{userId}")
-    ResponseEntity<User> getUser(@PathVariable Long userId){
-        return ResponseEntity.of(userService.getUser(userId));
-    }
-
     @GetMapping("/admins")
     List<User> getUsers(){
         return userService.getUsers();
@@ -123,26 +116,13 @@ public class AdminController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping("/admins/{adminId}")
-    ResponseEntity<Void> updateUser(@RequestBody User user,@PathVariable Long userId){
-        return userService.getUser(userId)
-                .map(p->{userService.setUser(user);
-                    return new ResponseEntity<Void>(HttpStatus.OK);
-                }).orElseGet(() -> ResponseEntity.notFound().build());
-    }
 
-    @DeleteMapping("/admins/{adminId}")
-    ResponseEntity<Void> deleteShelter(@PathVariable Long userId){
-        return  userService.getUser(userId).map(p->{
-            userService.deleteUser(userId);
-            return new ResponseEntity<Void>(HttpStatus.OK);
-        }).orElseGet(()->ResponseEntity.notFound().build());
-    }
+
 
     @GetMapping("/deleteUser/{userId}")
     public String deleteUser(Model model
             ,@PathVariable( value="userId" ) Long userId){
-        Optional<User> user = userService.getUser(userId);
+        User user = userService.getUser(userId);
         userService.deleteUser(userId);
         model.addAttribute("user",user);
         return "redirect:/admin";
@@ -151,7 +131,7 @@ public class AdminController {
     public String updateUser(Model model
             ,@PathVariable( value="userId" ) Long userId){
 
-        Optional<User> user = userService.getUser(userId);
+        User user = userService.getUser(userId);
         model.addAttribute("user",user);
         return "updateuser";
     }

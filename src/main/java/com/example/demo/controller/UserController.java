@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.models.Comment;
 import com.example.demo.models.DogShelter;
 import com.example.demo.models.Posting;
 import com.example.demo.models.User;
 import com.example.demo.security.CurrentUserFinder;
+import com.example.demo.service.CommentService;
 import com.example.demo.service.DogShelterService;
 import com.example.demo.service.PostingService;
 import com.example.demo.service.UserService;
@@ -34,7 +36,10 @@ public class UserController {
     PostingService postingService;
 
     @Autowired
-    BCryptPasswordEncoder   bCryptPasswordEncoder;
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    CommentService commentService;
 
 
     @Autowired
@@ -90,15 +95,14 @@ public class UserController {
         return "sortedHomePage";
     }
 
-    @GetMapping("/{userId}")
-    ResponseEntity<User> getUser(@PathVariable Long userId) {
-        return ResponseEntity.of(userService.getUser(userId));
-    }
-
     @GetMapping("/userProfile")
     public String userProfile(Model model) {
         return "redirect:/user/userProfile/page/1?sortField=name&sortDir=asc";
+    }
 
+    @GetMapping("/profiles/{id}")
+    public String profile(@PathVariable(value="id") Long id, Model model) {
+        return "redirect:/user/profiles/page/"+id+"/1?sortField=name&sortDir=asc";
     }
 
     @GetMapping("/userProfile/page/{pageNo}")
@@ -106,14 +110,14 @@ public class UserController {
                                        @RequestParam("sortField") String sortField,
                                        @RequestParam("sortDir") String sortDir,
                                        Model model) {
-        Optional<User> currentUser = currentUserFinder.getCurrentUser();
+        User currentUser = currentUserFinder.getCurrentUser();
 
         int pageSize = 5;
 
         String keyword = " ";
-        Page<Posting> page = postingService.searchByUser(pageNo, pageSize, sortField, sortDir, currentUser.get().getUserId());
+        Page<Posting> page = postingService.searchByUser(pageNo, pageSize, sortField, sortDir, currentUser.getUserId());
         List<Posting> posting = page.getContent();
-        currentUser.ifPresent(user -> model.addAttribute("currUser", user));
+        model.addAttribute("currUser", currentUser);
         model.addAttribute("userPostings",posting);
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
@@ -121,30 +125,114 @@ public class UserController {
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
+        model.addAttribute("userPostings", currentUser.getUserPostings());
+        List<Comment> comments = commentService.findByUser(currentUser);
+        int numberComments = comments.size();
+        model.addAttribute("numberOfComments",numberComments);
+        model.addAttribute("comments",comments);
+        model.addAttribute("userRole", currentUser.getRole());
+
         return "userProfilePaginated.html";
     }
 
+    @GetMapping("/profiles/page/{id}/{pageNo}")
+    public String getUser(@PathVariable(value="id") Long id, @PathVariable(value = "pageNo") int pageNo,
+                          @RequestParam("sortField") String sortField,
+                          @RequestParam("sortDir") String sortDir,Model model){
+        User currentUser = currentUserFinder.getCurrentUser();
+        User profile = userService.getUser(id);
+        /////////////////////////////////////////////////////////////////////
+        int pageSize = 5;
 
-    @PostMapping(path = "/")
-    ResponseEntity<Void> createUser(@RequestBody User user) {
-        User createdUser = userService.setUser(user);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{userId}").buildAndExpand(createdUser.getUserId()).toUri();
-        return ResponseEntity.created(location).build();
+        String keyword = " ";
+        Page<Posting> page = postingService.searchByUser(pageNo, pageSize, sortField, sortDir, profile.getUserId());
+        List<Posting> posting = page.getContent();
+        model.addAttribute("userPostings",posting);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        ////////////////////////////////////////////////////////////////////
+
+        model.addAttribute("userProfile", currentUser);
+        model.addAttribute("currUser", profile);
+        model.addAttribute("userPostings", profile.getUserPostings());
+
+        List<Comment> comments = commentService.findByUser(profile);
+        Comment currUserComment = null;
+        for (Comment com : comments){
+            if(com.getUser().getUserId().equals(currentUser.getUserId())){
+                currUserComment = com;
+                break;
+            }
+        }
+        int numberComments = comments.size();
+        model.addAttribute("numberOfComments",numberComments);
+        model.addAttribute("userComment",currUserComment);
+        model.addAttribute("comments",comments);
+        model.addAttribute("userRole", profile.getRole());
+        model.addAttribute("newComment", new Comment());
+        //model.addAttribute("log","user");
+
+        return "profile.html";
     }
 
-    @PutMapping("/all/{userId}")
-    ResponseEntity<Void> updateUser(@RequestBody User user, @PathVariable Long userId) {
-        return userService.getUser(userId)
-                .map(p -> {
-                    userService.setUser(user);
-                    return new ResponseEntity<Void>(HttpStatus.OK);
-                }).orElseGet(() -> ResponseEntity.notFound().build());
+    @PostMapping(value="/comment/{userId}")
+    public String addComment(@PathVariable(value="userId") Long userId, @ModelAttribute("newComment") Comment comment){
+        User userRated = userService.getUser(userId);
+        User commentOwner = currentUserFinder.getCurrentUser();
+        comment.setOthers(userRated);
+        comment.setUser(commentOwner);
+        commentService.addComment(comment);
+        float newUserRating = 0;
+        float sum = 0;
+
+        float numberOfComments = 0;
+        List<Comment> comments = commentService.findByUser(userRated);
+        for (Comment com: comments)
+        {
+            sum+=com.getRate();
+            numberOfComments++;
+        }
+        newUserRating = sum/numberOfComments;
+        userRated.setRating_score(newUserRating);
+        userService.setUser(userRated);
+
+        return "redirect:/user/profiles/" + userId;
     }
+
+    @GetMapping("/delete/{id}")
+    public String deleteComment(@PathVariable("id") long id, Model model){
+        Comment comment = commentService.findById(id);
+        commentService.deleteComment(comment);
+        User ratedUser = userService.getUser(comment.getOthers().getUserId());
+        float newUserRating = 0;
+        float sum = 0;
+        float numberOfComments = 0;
+        List<Comment> comments = commentService.findByUser(ratedUser);
+        for (Comment com: comments)
+        {
+            sum+=com.getRate();
+            numberOfComments++;
+        }
+        if(numberOfComments != 0){
+            newUserRating = sum/numberOfComments;
+            ratedUser.setRating_score(newUserRating);
+            userService.setUser(ratedUser);
+        }else{
+            ratedUser.setRating_score(0);
+            userService.setUser(ratedUser);
+        }
+        return "redirect:/user/profiles/" + comment.getOthers().getUserId();
+    }
+
     @GetMapping("/changePassword")
     public String changePassword(Model model){
         Long userId = currentUserFinder.getCurrentUserId();
-        Optional<User> user = userService.getUser(userId);
+        User user = userService.getUser(userId);
         model.addAttribute("user",user);
         return "changepassword.html";
     }

@@ -15,13 +15,17 @@ public class User {
     private String surname;
     private String password;
     private String email;
+    private float rating_score = 0;
     private boolean enabled = true;
     private String phone_number;
     private String profile_picture = "default_profile.jpg";
     private String role = "ROLE_USER";
     @OneToMany(mappedBy = "user",targetEntity = Posting.class,fetch = FetchType.EAGER)
     private List<Posting> userPostings;
-
+    @OneToMany(mappedBy = "user")
+    private List<Comment> mycomments;
+    @OneToMany(mappedBy = "others")
+    private List<Comment> othersComments;
 
 
     public User(String username, String name, String surname, String password, String email, String phone_number) {
@@ -31,6 +35,30 @@ public class User {
         this.password = password;
         this.email = email;
         this.phone_number = phone_number;
+    }
+
+    public List<Comment> getMycomments() {
+        return mycomments;
+    }
+
+    public void setMycomments(List<Comment> mycomments) {
+        this.mycomments = mycomments;
+    }
+
+    public List<Comment> getOthersComments() {
+        return othersComments;
+    }
+
+    public void setOthersComments(List<Comment> othersComments) {
+        this.othersComments = othersComments;
+    }
+
+    public float getRating_score() {
+        return rating_score;
+    }
+
+    public void setRating_score(float rating_score) {
+        this.rating_score = rating_score;
     }
 
     public String getProfile_picture() {

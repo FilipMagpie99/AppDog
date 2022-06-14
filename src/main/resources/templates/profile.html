@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Library System</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body class = "table table-striped table-responsive-md">
+<center>
+  <ul th:replace="a :: userNavBar"></ul>
+  <div class="container my-2">
+    <div class="tytul">
+      <h1>User profile</h1>
+      <br />
+    </div>
+    <div class="container my-2" >
+      <div>
+        <img class="avatar" alt="Avatar" th:src="${'/uploads/'+currUser.profile_picture}"/>
+      </div>
+      <h1 th:text="${currUser}"></h1>
+    </div>
+    <th:block th:each="userPostings : ${userPostings}">
+      <div class="card" style="margin: 20px; padding: 0px">
+        <div class="card-body" style="margin:0px; padding:0px">
+          <div class="row" style="margin:0px">
+            <div class="col-25">
+              <img th:src="${'/uploads/'+userPostings.posting_image}" height="152px" width="216px"/>
+            </div>
+            <div class="col-75" style="padding: .75rem 1rem;">
+              <a class="card-title" style="text-decoration: none; margin-bottom: 2px;font-weight: bold;font-size: 2em;color: black; display:block;" th:href="${'/home/postings/' + userPostings.postingId}" th:text="${userPostings.name}"></a>
+              <p class="card-text" style="font-size:15px; margin-top:10px;" th:text="${userPostings.description}"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </th:block>
+  </div>
+  <div th:if = "${totalPages > 1}">
+    <div class = "row col-sm-10">
+      <div class = "col-sm-2">
+        Total Rows: [[${totalItems}]]
+      </div>
+      <div class = "col-sm-1">
+					<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+						<a th:if="${currentPage != i}" th:href="@{'/user/profiles/page/'+ ${currUser.userId} + '/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+						<span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
+					</span>
+      </div>
+      <div class = "col-sm-1">
+        <a th:if="${currentPage < totalPages}" th:href="@{'/user/profiles/page/' + ${currUser.userId} + '/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+        <span th:unless="${currentPage < totalPages}">Next</span>
+      </div>
+
+      <div class="col-sm-1">
+        <a th:if="${currentPage < totalPages}" th:href="@{'/user/profiles/page/' + ${currUser.userId} + '/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+        <span th:unless="${currentPage < totalPages}">Last</span>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+  <div style="width: 70%; margin: auto">
+  <div th:if="${userRole == 'ROLE_USER'} and ${userComment == null}">
+    <div>
+      <form th:action="@{/user/comment/{userId}(userId=${currUser.userId})}" th:object="${newComment}" method="post">
+        <h1 style="font-weight:bold">Add your opinion about this user</h1>
+        <p style="margin-bottom: 2px">Content:</p>
+        <textarea rows="4" cols="40" maxlength="250" th:field="*{content}"></textarea>
+        <p></p>
+        <span style="font-size:35px; margin:2px" class="fa fa-star checked"></span>
+        <input type="number" cols="5" th:field="*{rate}" step="0.5" max="5" min="1"/>
+        <button type="submit" class="btn btn-success">Add</button>
+      </form>
+    </div>
+  </div>
+  <div th:if="${userRole == 'ROLE_USER'} and ${userComment != null}">
+    <h1 style="font-weight:bold">Twoja recenzja</h1>
+    <div class="card" style="margin: 5px, padding: 5px">
+      <div class="card-body">
+        <span style="font-size:25px; margin-top: 1px" class="fa fa-star checked"></span>
+        <span class="card-title" style="font-size: 25px; margin-top: 1px" th:text="${userComment.getRateString}"></span>
+        <p class="card-text" th:text="${userComment.content}"></p>
+      </div>
+    </div>
+    <form th:action="@{/user/delete/{id}(id = ${userComment.id})}">
+      <button type="submit" style="margin-left: 1rem;" class="btn btn-danger">DELETE</button>
+    </form>
+  </div>
+
+
+
+
+  <h2 style="font-weight: bold;margin-bottom: 10px;margin-top: 20px" th:text="${'Opinions('+numberOfComments+')'}"></h2>
+  <th:block th:each="comment : ${comments}">
+    <div class="card" style="margin: 5px, padding: 5px">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-20">
+            <img class="avatar" alt="Avatar" th:src="${'/uploads/'+comment.getUser.profile_picture}"/>
+          </div>
+
+          <div class="col-80" style="padding-left: 15px">
+
+            <div th:if="${userRole == 'ROLE_USER'}">
+              <div th:if="${userProfile.userId == comment.getUser.userId}">
+                <a class="card-title" href="/user/userProfile" style="text-decoration: none; margin-bottom: 0px;font-weight: bold;font-size: 2em;color: black; display:block;" th:text="${comment.getUser.getUsername}"></a>
+              </div>
+              <div th:unless="${userProfile.userId == comment.getUser.userId}">
+                <a class="card-title" style="text-decoration: none; margin-bottom: 0px;font-weight: bold;font-size: 2em;color: black; display:block;" th:href="${'/user/profiles/'+comment.getUser.userId}" th:text="${comment.getUser.getUsername}"></a>
+              </div>
+            </div>
+            <div th:unless="${userRole == 'ROLE_USER'}">
+              <a class="card-title" style="text-decoration: none; margin-bottom: 0px;font-weight: bold;font-size: 2em;color: black; display:block;" th:href="${'/user/profiles/'+comment.getUser.userId}" th:text="${comment.getUser.getUsername}"></a>
+            </div>
+
+            <div th:if="${comment.getRateString == 0}">
+              <span class="card-title" style="font-size: 25px; margin-top: 1px">No rating</span>
+            </div>
+            <div th:unless="${comment.getRateString == 0}">
+              <span style="font-size:25px; margin-top: 1px" class="fa fa-star checked"></span>
+              <span class="card-title" style="font-size: 25px; margin-top: 1px" th:text="${comment.getRateString+'/5'}"></span>
+            </div>
+
+            <p class="card-text" th:text="${comment.content}"></p>
+
+
+            <div th:if="${userRole == 'ROLE_ADMIN'}">
+              <form th:action="@{/admin/deleteComment/{id}(id = ${comment.id})}">
+                <button type="submit" style="float:right" class="btn btn-danger">DELETE</button>
+              </form>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </th:block>
+  </div>
+  </div>
+</center>
+</body>
+</html>

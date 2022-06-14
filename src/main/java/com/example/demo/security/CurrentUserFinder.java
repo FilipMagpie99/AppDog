@@ -28,8 +28,8 @@ public class CurrentUserFinder {
         return userId;
     }
 
-    public Optional<User> getCurrentUser(){
-        Optional<User> currentUser = userService.getUser(getCurrentUserId());
+    public User getCurrentUser(){
+        User currentUser = userService.getUser(getCurrentUserId());
         return currentUser;
     }
 }

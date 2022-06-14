@@ -76,7 +76,7 @@ public class PostingController {
     @PostMapping(path = "/postings")
     String createShelter(Posting posting,@RequestParam(value="image") MultipartFile file) throws IOException {
 
-        posting.setUser(currentUserFinder.getCurrentUser().get());
+        posting.setUser(currentUserFinder.getCurrentUser());
         String fileName = file.getOriginalFilename();
         if(!file.isEmpty()){
             String path = System.getProperty("user.dir")+"/uploads"+"/"+fileName;

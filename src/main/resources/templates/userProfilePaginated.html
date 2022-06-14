@@ -64,6 +64,48 @@
             </div>
         </div>
     </div>
+    <br>
+    <br>
+    <br>
+
+    <div style="width: 70%; margin: auto">
+    <h2 style="font-weight: bold;margin-bottom: 10px;margin-top: 20px" th:text="${'Opinions('+numberOfComments+')'}"></h2>
+    <th:block th:each="comment : ${comments}">
+        <div class="card" style="margin: 5px, padding: 5px">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-20">
+                        <img class="avatar" alt="Avatar" th:src="${'/uploads/'+comment.getUser.profile_picture}"/>
+                    </div>
+
+                    <div class="col-80" style="padding-left: 15px">
+
+                        <div th:if="${userRole == 'ROLE_USER'}">
+                            <a class="card-title" style="text-decoration: none; margin-bottom: 0px;font-weight: bold;font-size: 2em;color: black; display:block;" th:href="${'/user/profiles/'+comment.getUser.userId}" th:text="${comment.getUser.getUsername}"></a>
+                        </div>
+
+                        <div th:if="${comment.getRateString == 0}">
+                            <span class="card-title" style="font-size: 25px; margin-top: 1px">No rating</span>
+                        </div>
+
+                        <div th:unless="${comment.getRateString == 0}">
+                            <span style="font-size:25px; margin-top: 1px" class="fa fa-star checked"></span>
+                            <span class="card-title" style="font-size: 25px; margin-top: 1px" th:text="${comment.getRateString+'/5'}"></span>
+                        </div>
+
+                        <p class="card-text" th:text="${comment.content}"></p>
+
+                        <div th:if="${userRole == 'ROLE_ADMIN'}">
+                            <form th:action="@{/admin/deleteComment/{id}(id = ${comment.id})}">
+                                <button type="submit" style="float:right" class="btn btn-danger">DELETE</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
     </div>
 </center>
 </body>
