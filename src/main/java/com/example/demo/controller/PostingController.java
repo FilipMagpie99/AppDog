@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/home")
@@ -97,6 +98,15 @@ public class PostingController {
     public String addPosting(Model model){
         model.addAttribute("newPosting", new Posting());
         return "postingAddPage.html";
+    }
+    @GetMapping("/postingsfilter")
+    public String searchByFilters(Model model, @RequestParam(value= "animal",required = false) String animal, @RequestParam(value= "sex",required = false) String sex){
+        List<Posting> postings = postingService.getPostings().stream().filter(x -> x.getSex().equals(sex) && x.getAnimal().equals(animal)).collect(Collectors.toList());
+        System.out.println("dupa");
+
+        model.addAttribute("posting", postings);
+        return "sortedHomePage";
+
     }
 
 

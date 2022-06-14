@@ -48,7 +48,16 @@
                 <input type="text" id="image" required="required" th:field="${newPosting.posting_image}">
             </div>
         </div>
-
+        <div>
+            <ul th:fragment="options" class="options">
+                <li>Choose animal: <br/> <select th:name="animal" th:field="${newPosting.animal}">
+                    <option value="dog">Dog</option>
+                    <option value="cat">Cat</option>
+                    <option value="turtle">Turtle</option>
+                </select> </li>
+                <li>Sex: <br/><select th:name="sex" th:field="${newPosting.sex}"><option  value="m" >M</option><option value="f">F</option></select></li>
+            </ul>
+        </div>
 
 
         <div class="row">
