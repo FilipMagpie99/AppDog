@@ -47,6 +47,8 @@ public class PostingController {
 
     @GetMapping("/postings/{postingId}")
     public String postingPage(@PathVariable Integer postingId, Model model) {
+        model.addAttribute("posting", postingService.getPosting(postingId).get());
+        model.addAttribute("userPst", postingService.getPosting(postingId).get().getUser());
         Optional<Posting> currentPosting = postingService.getPosting(postingId);
         currentPosting.ifPresent(posting -> model.addAttribute("posting",posting));
         return "postingPage";
@@ -88,7 +90,6 @@ public class PostingController {
         Posting createdPosting = postingService.setPosting(posting);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{postingId}").buildAndExpand(createdPosting.getPostingId()).toUri();
-
         return "redirect:/";
     }
 
@@ -116,8 +117,10 @@ public class PostingController {
     }
 
     @GetMapping("/postingsfilter")
-    public String searchByFilters(Model model, @RequestParam(value= "animal",required = false) String animal, @RequestParam(value= "sex",required = false) String sex){
+    public String searchByFilters(Model model, @RequestParam(value= "animal",required = false) String animal, @RequestParam(value= "sex",required = false) String sex)
+                                  {
         List<Posting> postings = postingService.getPostings().stream().filter(x -> x.getSex().equals(sex) && x.getAnimal().equals(animal)).collect(Collectors.toList());
+
         model.addAttribute("posting", postings);
         return "sortedHomePage";
     }
