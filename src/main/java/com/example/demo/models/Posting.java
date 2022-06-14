@@ -16,9 +16,6 @@ public class Posting {
     @ManyToOne(targetEntity = DogShelter.class,fetch = FetchType.EAGER)
     @JoinColumn(name="shelterId")
     private DogShelter dogShelter = null;
-    private String animal;
-    private String sex;
-
 
     public Posting(String name, String description, String posting_image) {
         this.name = name;
@@ -87,21 +84,5 @@ public class Posting {
 
     public void setDogShelter(DogShelter dogShelter) {
         this.dogShelter = dogShelter;
-    }
-
-    public String getAnimal() {
-        return animal;
-    }
-
-    public void setAnimal(String animal) {
-        this.animal = animal;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
     }
 }
