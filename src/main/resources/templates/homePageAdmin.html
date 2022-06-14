@@ -21,6 +21,13 @@
             <br />
             <br />
         </div>
+        <form th:action="@{/user/search}" method="get">
+            <input type="search"   name="keyword" th:value="${keyword}"  placeholder="Find posting" size="50" >
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-search"></i> Search
+            </button>
+
+        </form>
         <th:block th:each="posting : ${posting}">
             <div class="card" style="margin: 20px; padding: 0px">
                 <div class="card-body" style="margin:0px; padding:0px">
