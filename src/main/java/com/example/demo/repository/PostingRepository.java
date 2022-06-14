@@ -13,4 +13,5 @@ import java.util.List;
 @Repository
 public interface PostingRepository extends JpaRepository<Posting, Integer> {
     Page<Posting> findByNameContainingIgnoreCase( String nazwa,Pageable pageable);
+    Page<Posting> findPostingByUser_UserId(Long userId,Pageable pageable);
 }

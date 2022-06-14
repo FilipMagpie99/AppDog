@@ -97,36 +97,33 @@ public class UserController {
 
     @GetMapping("/userProfile")
     public String userProfile(Model model) {
-        Optional<User> currentUser = currentUserFinder.getCurrentUser();
-        currentUser.ifPresent(user -> model.addAttribute("currUser", user));
-        currentUser.ifPresent(user -> model.addAttribute("userPostings", user.getUserPostings()));
-        return "userProfile.html";
+        return "redirect:/user/userProfile/page/1?sortField=name&sortDir=asc";
+
     }
-/*
+
     @GetMapping("/userProfile/page/{pageNo}")
     public String userProfilePaginated(@PathVariable(value = "pageNo") int pageNo,
                                        @RequestParam("sortField") String sortField,
                                        @RequestParam("sortDir") String sortDir,
                                        Model model) {
+        Optional<User> currentUser = currentUserFinder.getCurrentUser();
+
         int pageSize = 5;
 
-        Page<Posting> page = postingService.findPaginated(pageNo, pageSize, sortField, sortDir);
-        List<Posting> posting = page.getContent();
         String keyword = " ";
-        Long userId = currentUserFinder.getCurrentUserId();
-
-        Optional<User> currentUser = currentUserFinder.getCurrentUser();
+        Page<Posting> page = postingService.searchByUser(pageNo, pageSize, sortField, sortDir, currentUser.get().getUserId());
+        List<Posting> posting = page.getContent();
         currentUser.ifPresent(user -> model.addAttribute("currUser", user));
-        currentUser.ifPresent(user -> model.addAttribute("userPostings", user.getUserPostings()));
+        model.addAttribute("userPostings",posting);
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-        return "userProfile.html";
+        return "userProfilePaginated.html";
     }
-*/
+
 
     @PostMapping(path = "/")
     ResponseEntity<Void> createUser(@RequestBody User user) {

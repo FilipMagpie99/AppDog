@@ -54,6 +54,7 @@ public class PostingServiceImpl implements PostingService {
         return postingRepository.findAll(pageable);
     }
 
+    @Override
     public Page<Posting> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();
@@ -62,12 +63,21 @@ public class PostingServiceImpl implements PostingService {
         return this.postingRepository.findAll(pageable);
     }
 
+    @Override
     public Page<Posting> findPaginatedByName(int pageNo, int pageSize, String sortField, String sortDirection,String name) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         return this.postingRepository.findByNameContainingIgnoreCase(name,pageable);
+    }
+    @Override
+    public Page<Posting> searchByUser(int pageNo, int pageSize, String sortField, String sortDirection, Long userId) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+        return this.postingRepository.findPostingByUser_UserId(userId, pageable);
     }
 
 

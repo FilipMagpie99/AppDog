@@ -19,5 +19,6 @@ public interface PostingService {
     Optional<Posting> getPosting(Integer postingId);
     Page<Posting> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
     Page<Posting> findPaginatedByName(int pageNo, int pageSize, String sortField, String sortDirection,String name);
+    Page<Posting> searchByUser(int pageNo, int pageSize, String sortField, String sortDirection,Long userId);
 
 }
