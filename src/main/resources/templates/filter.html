@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+
+
+    <div style="width:20%; float:left;background:#68a9e3" th:fragment="filter">
+    <form th:action="@{/home/postingsfilter}" method="GET">
+    <li>Choose animal: <br/>
+      <select th:name="animal">
+        <option value="dog">Dog</option>
+        <option value="cat">Cat</option>
+        <option value="turtle">Turtle</option>
+
+    </select> </li><br/><br/><br/>
+    <li>Sex: <br/><select th:name="sex"><option  value="m" >m</option><option value="f">f</option></select></li><br/><br/><br/>
+    <li><input type="submit" value="Filter"></li><br/><br/><br/>
+
+
+    </form>
+    <form th:action="@{/user}" method="GET"><li><input type="submit" value="Clear"></li></form>
+    </div>
+
+
+</body>
+</html>
