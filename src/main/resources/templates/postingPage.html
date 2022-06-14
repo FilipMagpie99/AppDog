@@ -12,31 +12,66 @@
 
 </head>
 <body>
-<center>
+<div th:if="${userRole == 'ROLE_USER'} and ${userComment == null}">
     <ul th:replace="a :: userNavBar"></ul>
-    <div class="container my-2">
-        <div class="tytul">
-            <h1></h1>
-            <br />
+</div>
+<div th:unless="${userRole == 'ROLE_USER'}">
+    <ul th:replace="a :: adminNavBar"></ul>
+</div>
+<div style="width: 70%, margin: auto">
 
+    <div class="container my-2" >
+        <div class="tytul" style="text-align: center;">
+            <br />
+            <h1>Posting view</h1>
+            <br />
         </div>
-        <div class="card" >
+
+        <div class="card">
             <h1 style="font-weight:bold"></h1>
-            <div>
+            <div style="text-align: center;">
                 <img class="class-img-top" alt="Avatar"  th:src="${'/uploads/'+posting.posting_image}"/>
             </div>
             <div class="card-body">
-            <h1 th:text="${posting.name}"></h1>
-            <h1>Posting from user:</h1><br/>
-            <h2 th:text="${userPst.username}"></h2>
-            <br/>
-            <h3 th:text="${posting.animal}"></h3>
-            <h3 th:text="${posting.sex}"></h3>
+                <h1 th:text="${posting.name}" style="font: bold"></h1>
+                <h3 th:text="${posting.description}"></h3>
+                <br/>
+                <br/>
+                <br/>
+                <h3>About pet:</h3>
+                <br/>
+                <h3 th:text="${'Animal: '+posting.animal}"></h3>
+                <h3 th:text="${'Sex: '+posting.sex}"></h3>
+                <br/>
+                <br/>
+                <br/>
+                <h1>Posting from user:</h1><br/>
 
-            <br/>
-            <h2>Posting description:</h2><br/>
-            <h3 th:text="${posting.description}"></h3>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-20">
+                            <img class="avatar" alt="Avatar" th:src="${'/uploads/'+userPst.profile_picture}"/>
+                        </div>
 
+                        <div class="col-80" style="padding-left: 15px">
+
+                            <div th:if="${userRole == 'ROLE_USER'}">
+                                <div th:if="${currUser.userId == userPst.userId}">
+                                    <a class="card-title" href="/user/userProfile" style="text-decoration: none; margin-bottom: 0px;font-weight: bold;font-size: 2em;color: black; display:block;" th:text="${userPst.username}"></a>
+                                </div>
+                                <div th:unless="${currUser.userId == userPst.userId}">
+                                    <a class="card-title" style="text-decoration: none; margin-bottom: 0px;font-weight: bold;font-size: 2em;color: black; display:block;" th:href="${'/user/profiles/'+userPst.userId}" th:text="${userPst.username}"></a>
+                                </div>
+                            </div>
+                            <div th:unless="${userRole == 'ROLE_USER'}">
+                                <a class="card-title" style="text-decoration: none; margin-bottom: 0px;font-weight: bold;font-size: 2em;color: black; display:block;" th:href="${'/admin/profiles/'+userPst.userId}" th:text="${userPst.username}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+</div>
+<div/>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.models.Posting;
+import com.example.demo.models.User;
 import com.example.demo.security.CurrentUserFinder;
 import com.example.demo.service.PostingService;
 import com.example.demo.service.UserService;
@@ -47,6 +48,9 @@ public class PostingController {
 
     @GetMapping("/postings/{postingId}")
     public String postingPage(@PathVariable Integer postingId, Model model) {
+        User currUser = currentUserFinder.getCurrentUser();
+        model.addAttribute("currUser", currUser);
+        model.addAttribute("userRole", currUser.getRole());
         model.addAttribute("posting", postingService.getPosting(postingId).get());
         model.addAttribute("userPst", postingService.getPosting(postingId).get().getUser());
         Optional<Posting> currentPosting = postingService.getPosting(postingId);

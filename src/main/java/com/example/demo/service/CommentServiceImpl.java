@@ -41,4 +41,9 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> findByUser(User user){
         return commentRepo.findByOthers(user);
     }
+
+    @Override
+    public List<Comment> findByOwner(User user) {
+        return commentRepo.findByUser(user);
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.models.Posting;
+import com.example.demo.models.User;
 import com.example.demo.repository.PostingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -78,6 +79,16 @@ public class PostingServiceImpl implements PostingService {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         return this.postingRepository.findPostingByUser_UserId(userId, pageable);
+    }
+
+    @Override
+    public List<Posting> findByUser(User user) {
+        return postingRepository.findByUser(user);
+    }
+
+    @Override
+    public void deletePostings(List<Posting> postings) {
+        postingRepository.deleteAll(postings);
     }
 
 

@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.models.Comment;
 import com.example.demo.models.Posting;
 import com.example.demo.models.User;
 import com.example.demo.security.CurrentUserFinder;
+import com.example.demo.service.CommentService;
 import com.example.demo.service.PostingService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,8 @@ public class AdminController {
     }
     @Autowired
     PostingService postingService;
+    @Autowired
+    CommentService commentService;
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -85,6 +89,55 @@ public class AdminController {
         return "sortedAdminPage";
     }
 
+    @GetMapping("/profiles/{id}")
+    public String profile(@PathVariable(value="id") Long id, Model model) {
+        return "redirect:/admin/profiles/page/"+id+"/1?sortField=name&sortDir=asc";
+    }
+
+    @GetMapping("/profiles/page/{id}/{pageNo}")
+    public String getUser(@PathVariable(value="id") Long id, @PathVariable(value = "pageNo") int pageNo,
+                          @RequestParam("sortField") String sortField,
+                          @RequestParam("sortDir") String sortDir,Model model){
+        User currentUser = currentUserFinder.getCurrentUser();
+        User profile = userService.getUser(id);
+        /////////////////////////////////////////////////////////////////////
+        int pageSize = 5;
+
+        String keyword = " ";
+        Page<Posting> page = postingService.searchByUser(pageNo, pageSize, sortField, sortDir, profile.getUserId());
+        List<Posting> posting = page.getContent();
+        model.addAttribute("userPostings",posting);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        ////////////////////////////////////////////////////////////////////
+
+        model.addAttribute("userProfile", currentUser);
+        model.addAttribute("currUser", profile);
+        model.addAttribute("userPostings", profile.getUserPostings());
+
+        List<Comment> comments = commentService.findByUser(profile);
+        Comment currUserComment = null;
+        for (Comment com : comments){
+            if(com.getUser().getUserId().equals(currentUser.getUserId())){
+                currUserComment = com;
+                break;
+            }
+        }
+        int numberComments = comments.size();
+        model.addAttribute("numberOfComments",numberComments);
+        model.addAttribute("userComment",currUserComment);
+        model.addAttribute("comments",comments);
+        model.addAttribute("userRole", currentUser.getRole());
+        model.addAttribute("newComment", new Comment());
+        //model.addAttribute("log","user");
+
+        return "profile.html";
+    }
+
 
     @GetMapping("/deletePosting/{postingId}")
     public String deleteBook(Model model
@@ -108,21 +161,37 @@ public class AdminController {
         return userService.getUsers();
     }
 
-    @PostMapping(path = "/admin")
-    ResponseEntity<Void> createUser(@RequestBody User user){
-        User createdUser= userService.setUser(user);
-        URI location= ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{adminId}").buildAndExpand(createdUser.getUserId()).toUri();
-        return ResponseEntity.created(location).build();
-    }
-
-
-
-
     @GetMapping("/deleteUser/{userId}")
     public String deleteUser(Model model
             ,@PathVariable( value="userId" ) Long userId){
         User user = userService.getUser(userId);
+
+        List<Posting> userpostings = postingService.findByUser(user);
+        postingService.deletePostings(userpostings);
+        List<Comment> usercomments = commentService.findByOwner(user);
+        commentService.deleteComments(usercomments);
+        for(Comment comment:usercomments)
+        {
+            User ratedProfile = userService.getUser(comment.getOthers().getUserId());
+            float newUserScore = 0;
+            float sum = 0;
+            float numberOfComments = 0;
+            List<Comment> comments = commentService.findByUser(ratedProfile);
+            for (Comment com: comments)
+            {
+                sum+=com.getRate();
+                numberOfComments++;
+            }
+            if(numberOfComments != 0){
+                newUserScore = sum/numberOfComments;
+                ratedProfile.setRating_score(newUserScore);
+                userService.setUser(ratedProfile);
+            }else{
+                ratedProfile.setRating_score(0);
+                userService.setUser(ratedProfile);
+            }
+        }
+
         userService.deleteUser(userId);
         model.addAttribute("user",user);
         return "redirect:/admin";

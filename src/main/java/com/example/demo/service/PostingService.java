@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.models.Posting;
+import com.example.demo.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,5 +21,7 @@ public interface PostingService {
     Page<Posting> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
     Page<Posting> findPaginatedByName(int pageNo, int pageSize, String sortField, String sortDirection,String name);
     Page<Posting> searchByUser(int pageNo, int pageSize, String sortField, String sortDirection,Long userId);
+    List<Posting> findByUser(User user);
+    void deletePostings(List<Posting> postings);
 
 }

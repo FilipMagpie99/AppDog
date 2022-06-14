@@ -15,4 +15,5 @@ public interface CommentService {
     void deleteComment(Comment comment);
     void deleteComments(List<Comment> comments);
     List<Comment> findByUser(User user);
+    List<Comment> findByOwner(User user);
 }
